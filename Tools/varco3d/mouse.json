@@ -1,0 +1,4 @@
+{"res":1024,"rz":90,"ref_rz":90,"ref_sx":1,"ref_elev":12,"elev":12,"k":8,"ref_res":512,"sx":1.1,
+ "face":{"eye_l":[314,243],"nose":[372,246]},"u_from":"nose","eye_r":0.3,"fit":1.0,"cover":1.4,"skin_at":[-2.2,1.5],"mouth":"none",
+ "line":0.075,"old_dir":"../../Assets/NyangPunch/Resources/Sprites",
+ "frames":[{"name":"enemy_mouse","face":"dot","rz":90}]}

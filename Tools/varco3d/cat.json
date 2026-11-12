@@ -1,0 +1,13 @@
+{"res":1024,"rz":-20,"elev":18,"k":8,"ref_res":512,"sx":1.25,"flip":true,
+ "face":{"eye_l":[189,205],"eye_r":[282,205],"mouth":[236,240]},
+ "snap":["#f5a142","#d27a2c","#ffdaa3"],"snap_tol":0.5,
+ "eye_r":0.2,"cheek":"#ff8fb1","stripes":"#d27a2c","line":0.06,
+ "old_dir":"../../Assets/NyangPunch/Resources/Sprites",
+ "frames":[
+  {"name":"cat_idle","face":"dot"},
+  {"name":"cat_blink","face":"blink"},
+  {"name":"cat_hurt","face":"hurt","ry":6},
+  {"name":"cat_ko","face":"ko","ry":6},
+  {"name":"cat_walk1","face":"dot","ry":-5,"lift":0.06},
+  {"name":"cat_walk2","face":"dot","ry":5}
+ ]}

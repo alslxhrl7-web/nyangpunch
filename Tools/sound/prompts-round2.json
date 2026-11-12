@@ -1,0 +1,16 @@
+{
+ "note": "2차 생성: 1차에서 고르지 않은 10종. 1차는 3~9초로 길고 사실적이어서, 고른 것들(level 3, hurt 1, boss 1)처럼 귀여운 만화풍 + 1초 안쪽 + 한 번짜리로 다시 씀. 결과는 varco/<key>_4~6.mp3",
+ "keep": { "click": "now", "level": "3", "hurt": "1", "boss": "1" },
+ "prompts": {
+  "pop": "Cute cartoon pop for a mobile puzzle game, a single short mouth pop with a tiny rising boing, under half a second, clean, no background",
+  "drop": "Light cardboard box landing softly on a wooden floor, one short dull tap, under half a second, clean game sound effect, no echo",
+  "merge": "Satisfying merge sound for a cute puzzle game, a quick rising two-note chime ending in a soft pop, under one second, bright and clean",
+  "step": "Very soft single cat paw tap on a floor, tiny and gentle, under a quarter second, game sound effect, just one tap",
+  "punch": "Cartoon paw swat hit, a quick whoosh into a soft squishy thump, under half a second, cute and comedic game sound effect",
+  "bump": "Cartoon bonk of a small rubbery creature bumping into furniture, short hollow wooden knock with a tiny squeak, under half a second",
+  "hiss": "Short cartoon kitten hiss, quick and puffy, about half a second, cute not scary, game sound effect, no meow",
+  "throw": "Quick light whoosh of a soft yarn ball tossed through the air, under half a second, airy and cute game sound effect",
+  "nope": "Gentle wrong-move sound for a cute mobile game, soft descending two-note wooden blip, under half a second, not harsh",
+  "churu": "Cute reward pickup sound, a quick sparkly two-note bell chime, under one second, bright and happy mobile game"
+ }
+}

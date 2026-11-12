@@ -1,0 +1,296 @@
+[
+ {
+  "k": "click",
+  "j": 1,
+  "d": 4.74,
+  "p": "Soft short UI button tap for a cute casual mobile game, gentle rounded wooden pop, very short, no reverb",
+  "n": "button_tap(GEN_1).wav"
+ },
+ {
+  "k": "click",
+  "j": 2,
+  "d": 3.87,
+  "p": "Soft short UI button tap for a cute casual mobile game, gentle rounded wooden pop, very short, no reverb",
+  "n": "button_tap(GEN_2).wav"
+ },
+ {
+  "k": "click",
+  "j": 3,
+  "d": 6.84,
+  "p": "Soft short UI button tap for a cute casual mobile game, gentle rounded wooden pop, very short, no reverb",
+  "n": "button_tap(GEN_3).wav"
+ },
+ {
+  "k": "pop",
+  "j": 1,
+  "d": 7.16,
+  "p": "Tiny cute bubble pop, light and bouncy, very short, cartoon casual game",
+  "n": "bubble_pop(GEN_1).wav"
+ },
+ {
+  "k": "pop",
+  "j": 2,
+  "d": 3.15,
+  "p": "Tiny cute bubble pop, light and bouncy, very short, cartoon casual game",
+  "n": "bubble_pop(GEN_2).wav"
+ },
+ {
+  "k": "pop",
+  "j": 3,
+  "d": 2.03,
+  "p": "Tiny cute bubble pop, light and bouncy, very short, cartoon casual game",
+  "n": "bubble_pop(GEN_3).wav"
+ },
+ {
+  "k": "drop",
+  "j": 1,
+  "d": 1.62,
+  "p": "Small cardboard box set down on a wooden floor, soft muffled thud, very short",
+  "n": "box_setdown(GEN_1).wav"
+ },
+ {
+  "k": "drop",
+  "j": 2,
+  "d": 1.41,
+  "p": "Small cardboard box set down on a wooden floor, soft muffled thud, very short",
+  "n": "box_setdown(GEN_2).wav"
+ },
+ {
+  "k": "drop",
+  "j": 3,
+  "d": 5.87,
+  "p": "Small cardboard box set down on a wooden floor, soft muffled thud, very short",
+  "n": "box_setdown(GEN_3).wav"
+ },
+ {
+  "k": "merge",
+  "j": 1,
+  "d": 3.02,
+  "p": "Two cardboard boxes merging into a bigger box, cheerful magical sparkle chime with a soft cardboard puff, short, cute casual game",
+  "n": "box_merge(GEN_1).wav"
+ },
+ {
+  "k": "merge",
+  "j": 2,
+  "d": 0.81,
+  "p": "Two cardboard boxes merging into a bigger box, cheerful magical sparkle chime with a soft cardboard puff, short, cute casual game",
+  "n": "box_merge(GEN_2).wav"
+ },
+ {
+  "k": "merge",
+  "j": 3,
+  "d": 1.82,
+  "p": "Two cardboard boxes merging into a bigger box, cheerful magical sparkle chime with a soft cardboard puff, short, cute casual game",
+  "n": "box_merge(GEN_3).wav"
+ },
+ {
+  "k": "level",
+  "j": 1,
+  "d": 4.88,
+  "p": "Bright happy level up jingle, short ascending xylophone and marimba notes, cute casual mobile game",
+  "n": "level_up(GEN_1).wav"
+ },
+ {
+  "k": "level",
+  "j": 2,
+  "d": 7.25,
+  "p": "Bright happy level up jingle, short ascending xylophone and marimba notes, cute casual mobile game",
+  "n": "level_up(GEN_2).wav"
+ },
+ {
+  "k": "level",
+  "j": 3,
+  "d": 2.1,
+  "p": "Bright happy level up jingle, short ascending xylophone and marimba notes, cute casual mobile game",
+  "n": "level_up(GEN_3).wav"
+ },
+ {
+  "k": "step",
+  "j": 1,
+  "d": 4.35,
+  "p": "Tiny soft cat paw step on a carpet, single light pat, very short, cute",
+  "n": "cat_paw(GEN_1).wav"
+ },
+ {
+  "k": "step",
+  "j": 2,
+  "d": 5.33,
+  "p": "Tiny soft cat paw step on a carpet, single light pat, very short, cute",
+  "n": "cat_paw(GEN_2).wav"
+ },
+ {
+  "k": "step",
+  "j": 3,
+  "d": 5.52,
+  "p": "Tiny soft cat paw step on a carpet, single light pat, very short, cute",
+  "n": "cat_paw(GEN_3).wav"
+ },
+ {
+  "k": "punch",
+  "j": 1,
+  "d": 2.39,
+  "p": "Cute cartoon cat paw punch, soft boing whack, playful and bouncy, short, no violence",
+  "n": "cat_boing(GEN_1).wav"
+ },
+ {
+  "k": "punch",
+  "j": 2,
+  "d": 1.53,
+  "p": "Cute cartoon cat paw punch, soft boing whack, playful and bouncy, short, no violence",
+  "n": "cat_boing(GEN_2).wav"
+ },
+ {
+  "k": "punch",
+  "j": 3,
+  "d": 5.87,
+  "p": "Cute cartoon cat paw punch, soft boing whack, playful and bouncy, short, no violence",
+  "n": "cat_boing(GEN_3).wav"
+ },
+ {
+  "k": "bump",
+  "j": 1,
+  "d": 5.26,
+  "p": "Cartoon bonk of a small creature bumping into a wall or furniture, soft hollow thud, short and funny",
+  "n": "cartoon_bonk(GEN_1).wav"
+ },
+ {
+  "k": "bump",
+  "j": 2,
+  "d": 2.9,
+  "p": "Cartoon bonk of a small creature bumping into a wall or furniture, soft hollow thud, short and funny",
+  "n": "cartoon_bonk(GEN_2).wav"
+ },
+ {
+  "k": "bump",
+  "j": 3,
+  "d": 5.5,
+  "p": "Cartoon bonk of a small creature bumping into a wall or furniture, soft hollow thud, short and funny",
+  "n": "cartoon_bonk(GEN_3).wav"
+ },
+ {
+  "k": "hiss",
+  "j": 1,
+  "d": 0.93,
+  "p": "Small cute house cat hissing, short angry hiss, cartoonish and funny",
+  "n": "cat_hiss(GEN_1).wav"
+ },
+ {
+  "k": "hiss",
+  "j": 2,
+  "d": 8.68,
+  "p": "Small cute house cat hissing, short angry hiss, cartoonish and funny",
+  "n": "cat_hiss(GEN_2).wav"
+ },
+ {
+  "k": "hiss",
+  "j": 3,
+  "d": 3.85,
+  "p": "Small cute house cat hissing, short angry hiss, cartoonish and funny",
+  "n": "cat_hiss(GEN_3).wav"
+ },
+ {
+  "k": "throw",
+  "j": 1,
+  "d": 2.35,
+  "p": "Yarn ball thrown and rolling fast across the floor, light whoosh and soft roll, short",
+  "n": "yarn_roll(GEN_1).wav"
+ },
+ {
+  "k": "throw",
+  "j": 2,
+  "d": 2.69,
+  "p": "Yarn ball thrown and rolling fast across the floor, light whoosh and soft roll, short",
+  "n": "yarn_roll(GEN_2).wav"
+ },
+ {
+  "k": "throw",
+  "j": 3,
+  "d": 1.05,
+  "p": "Yarn ball thrown and rolling fast across the floor, light whoosh and soft roll, short",
+  "n": "yarn_roll(GEN_3).wav"
+ },
+ {
+  "k": "hurt",
+  "j": 1,
+  "d": 0.91,
+  "p": "Cute cartoon cat getting bumped, short surprised squeaky mew, playful not painful, casual game",
+  "n": "cat_squeak(GEN_1).wav"
+ },
+ {
+  "k": "hurt",
+  "j": 2,
+  "d": 7.67,
+  "p": "Cute cartoon cat getting bumped, short surprised squeaky mew, playful not painful, casual game",
+  "n": "cat_squeak(GEN_2).wav"
+ },
+ {
+  "k": "hurt",
+  "j": 3,
+  "d": 2.23,
+  "p": "Cute cartoon cat getting bumped, short surprised squeaky mew, playful not painful, casual game",
+  "n": "cat_squeak(GEN_3).wav"
+ },
+ {
+  "k": "nope",
+  "j": 1,
+  "d": 2.71,
+  "p": "Short soft UI error sound, low two-note boop, cute and gentle, not harsh",
+  "n": "ui_error(GEN_1).wav"
+ },
+ {
+  "k": "nope",
+  "j": 2,
+  "d": 2.12,
+  "p": "Short soft UI error sound, low two-note boop, cute and gentle, not harsh",
+  "n": "ui_error(GEN_2).wav"
+ },
+ {
+  "k": "nope",
+  "j": 3,
+  "d": 2.55,
+  "p": "Short soft UI error sound, low two-note boop, cute and gentle, not harsh",
+  "n": "ui_error(GEN_3).wav"
+ },
+ {
+  "k": "churu",
+  "j": 1,
+  "d": 2.42,
+  "p": "Collecting a cat treat reward, bright sparkling coin chime, happy and short, cute casual game",
+  "n": "coin_chime(GEN_1).wav"
+ },
+ {
+  "k": "churu",
+  "j": 2,
+  "d": 2.43,
+  "p": "Collecting a cat treat reward, bright sparkling coin chime, happy and short, cute casual game",
+  "n": "coin_chime(GEN_2).wav"
+ },
+ {
+  "k": "churu",
+  "j": 3,
+  "d": 0.98,
+  "p": "Collecting a cat treat reward, bright sparkling coin chime, happy and short, cute casual game",
+  "n": "coin_chime(GEN_3).wav"
+ },
+ {
+  "k": "boss",
+  "j": 1,
+  "d": 9.08,
+  "p": "Grumpy robot vacuum cleaner boss appears, cartoon motor whir rising into a short comedic dramatic sting, cute casual game",
+  "n": "robot_sting(GEN_1).wav"
+ },
+ {
+  "k": "boss",
+  "j": 2,
+  "d": 6.87,
+  "p": "Grumpy robot vacuum cleaner boss appears, cartoon motor whir rising into a short comedic dramatic sting, cute casual game",
+  "n": "robot_sting(GEN_2).wav"
+ },
+ {
+  "k": "boss",
+  "j": 3,
+  "d": 4.76,
+  "p": "Grumpy robot vacuum cleaner boss appears, cartoon motor whir rising into a short comedic dramatic sting, cute casual game",
+  "n": "robot_sting(GEN_3).wav"
+ }
+]

@@ -1,0 +1,4 @@
+{"res":1024,"rz":0,"elev":30,"k":8,"norm":"max","cam_z":0.15,"ref_res":512,"ref_elev":30,
+ "face":{"eye_l":[216,250],"eye_r":[291,250]},"eye_r":0.17,"cover":2.7,"remap":[["#524f50","#a39db5"],["#aaa5a5","#dcd8e6"],["#2a2928","#5d5368"]],"mouth":"none",
+ "line":0.05,"old_dir":"../../Assets/NyangPunch/Resources/Sprites",
+ "frames":[{"name":"enemy_vacuum","face":"angry","elev":30}]}

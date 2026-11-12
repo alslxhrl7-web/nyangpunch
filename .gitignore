@@ -1,0 +1,45 @@
+# Unity generated
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+*.csproj
+*.sln
+*.slnx
+*.suo
+*.user
+*.pidb
+*.booproj
+.vs/
+.vsconfig
+.idea/
+*.apk
+*.aab
+*.unitypackage
+crashlytics-build.properties
+sysinfo.txt
+
+# Build output and the copy of the project used for WebGL builds
+/[Bb]uilds/
+
+# Captures made while testing (screenshots, recorded play videos)
+/Captures/
+
+# Secrets and local settings: never commit
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.keystore
+secrets.*
+credentials.*
+butler_creds
+.claude/settings.local.json
+
+# OS
+.DS_Store
+Thumbs.db

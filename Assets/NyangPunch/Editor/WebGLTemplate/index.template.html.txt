@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+    <title>냥펀치</title>
+    <style>
+      html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #dfe4f4; touch-action: none; }
+      #unity-canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; background: #dfe4f4; outline: none; }
+      #loading { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+        font: 600 18px 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; color: #2b2233; pointer-events: none; }
+      #bar { width: min(60vw, 260px); height: 14px; border: 3px solid #2b2233; border-radius: 10px; background: #fffaf2; overflow: hidden; }
+      #fill { width: 0%; height: 100%; background: #ffd23f; }
+    </style>
+  </head>
+  <body>
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <div id="loading"><div id="msg">냥펀치 불러오는 중… 0%</div><div id="bar"><div id="fill"></div></div></div>
+    <script src="Build/{{LOADER}}"></script>
+    <script>
+      var msg = document.getElementById('msg'), fill = document.getElementById('fill'), loading = document.getElementById('loading');
+      createUnityInstance(document.getElementById('unity-canvas'), {
+        arguments: [],
+        dataUrl: "Build/{{DATA}}",
+        frameworkUrl: "Build/{{FRAMEWORK}}",
+        codeUrl: "Build/{{CODE}}",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "p로딩",
+        productName: "냥펀치",
+        productVersion: "1.0",
+        // phones report 3x or more; drawing the full-screen UI at that size costs fill rate for little visible gain
+        devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+      }, function (p) {
+        var pct = Math.round(p * 100);
+        msg.textContent = '냥펀치 불러오는 중… ' + pct + '%';
+        fill.style.width = pct + '%';
+      }).then(function () {
+        loading.remove();
+        document.getElementById('unity-canvas').focus();
+      }).catch(function (e) {
+        msg.textContent = '불러오기에 실패했어요: ' + e;
+      });
+    </script>
+  </body>
+</html>

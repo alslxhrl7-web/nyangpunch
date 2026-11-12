@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>냥펀치 효과음 비교</title>
+<style>
+  @font-face { font-family: 'Jua'; src: url('../../Assets/NyangPunch/Resources/Fonts/Jua.ttf'); }
+  :root { --ink:#2b2233; --paper:#fffaf2; --bg:#dfe4f4; --cheese:#f5a142; --butter:#ffd23f; --soft:#5d5368; --mint:#5fbf98; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Jua', system-ui, sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 80px; }
+  h1 { font-size: 34px; margin: 0 0 6px; }
+  .sub { color: var(--soft); margin: 0 0 20px; line-height: 1.5; font-family: system-ui, sans-serif; }
+  .row { background: var(--paper); border: 3px solid var(--ink); border-radius: 18px; padding: 14px 16px; margin-bottom: 14px; box-shadow: 0 4px 0 var(--ink); }
+  .head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .head b { font-size: 22px; } .head span { color: var(--soft); font-family: system-ui, sans-serif; font-size: 14px; }
+  .opts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .opts.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  @media (max-width: 760px) { .opts, .opts.three { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .opt { display: flex; flex-direction: column; gap: 6px; border: 2px solid #d9d2c4; border-radius: 12px; padding: 8px; background: #fff; }
+  label.opt { cursor: pointer; }
+  label.opt:has(input:checked) { border-color: var(--ink); background: #fff3d6; }
+  .opt .t { display: flex; justify-content: space-between; align-items: center; font-size: 15px; gap: 6px; }
+  .opt small { color: var(--soft); font-family: system-ui, sans-serif; font-size: 12px; }
+  .tag { font-family: system-ui, sans-serif; font-size: 11px; border-radius: 99px; padding: 1px 7px; background: var(--mint); color: #fff; white-space: nowrap; }
+  audio { width: 100%; height: 36px; }
+  .bar { position: sticky; bottom: 0; background: var(--paper); border-top: 3px solid var(--ink); padding: 10px 16px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .bar button { font: inherit; font-size: 18px; border: 3px solid var(--ink); border-radius: 12px; background: var(--butter); padding: 6px 14px; cursor: pointer; }
+  .bar output { font-family: system-ui, sans-serif; font-size: 13px; color: var(--soft); overflow-wrap: anywhere; flex: 1; min-width: 200px; }
+  .play-all { font: inherit; border: 2px solid var(--ink); border-radius: 10px; background: #fff; padding: 2px 10px; cursor: pointer; }
+</style></head>
+<body>
+<main>
+  <h1>냥펀치 효과음 비교</h1>
+  <p class="sub">위 칸은 지금 유니티 게임에서 실제로 나는 소리입니다. 아래는 적 종류마다 다르게 새로 만든 카툰풍 처치 소리 후보이고, 모두 짧게 잘라 둔 상태입니다(쥐·엘리트 쥐는 고르신 "쮝" 그대로).<br>
+  후보 중 "게임에 넣음" 표시가 지금 들어간 것입니다. 다른 후보가 더 좋으면 골라서 아래 "선택 결과 복사"로 알려 주세요.</p>
+  <div id="list"></div>
+</main>
+<div class="bar"><button id="copy">선택 결과 복사</button><output id="sum"></output></div>
+<script>
+// what the game plays right now: [key, name, where it came from, file]
+const SFX = '/Assets/NyangPunch/Resources/Sfx/';
+const INGAME = [
+  ['click', '클릭', '고름: 지금 소리(합성음)', 'current/click.wav'],
+  ['drop', '택배 상자 놓기', '고름: 영상 추천', SFX + 'drop.wav'],
+  ['merge', '상자 합치기', '고름: 영상 추천', SFX + 'merge.wav'],
+  ['level', '새 상자', '고름: 영상 추천', SFX + 'level.wav'],
+  ['clear', '층 클리어', '고름: 영상 추천', SFX + 'clear.wav'],
+  ['churu', '츄르', '고름: 지금 소리(합성음)', 'current/churu.wav'],
+  ['squeak', '쥐 처치', '고름: 쮝 1', SFX + 'squeak.wav'],
+  ['hiss', '하악질', '고름: 바르코 2', SFX + 'hiss.wav'],
+  ['throw', '털뭉치', '고름: 바르코 3', SFX + 'throw.wav'],
+  ['hurt', '맞음', '고름: 바르코 1', SFX + 'hurt.wav'],
+  ['boss', '보스 등장', '고름: 바르코 1', SFX + 'boss.wav'],
+  ['step', '발걸음', '고름: 카툰풍 새로 3', SFX + 'step.wav'],
+  ['punch', '냥펀치', '고름: 카툰풍 새로 3', SFX + 'punch.wav'],
+  ['bump', '쿠션·벽·적에 부딪힘', '고름: 카툰풍 새로 2', SFX + 'bump.wav'],
+  ['bump_pot', '화분 깨짐', '고름: 카툰풍 새로 2', SFX + 'bump_pot.wav'],
+  ['kill_fly', '파리 처치', '카툰풍 새로 만듦(고르는 중)', SFX + 'kill_fly.wav'],
+  ['kill_cucumber', '오이 처치', '카툰풍 새로 만듦(고르는 중)', SFX + 'kill_cucumber.wav'],
+  ['kill_boss', '보스 처치', '카툰풍 새로 만듦(고르는 중)', SFX + 'kill_boss.wav'],
+  ['pop', '파리 등장(목욕통 보스)', '카툰풍 새로 만듦', SFX + 'pop.wav'],
+];
+// cartoon-style candidates: [key, name, where it plays, file prefix in cut/, the one in the game now]
+const NEW = [
+  ['kill_fly', '파리 처치', '파리를 잡았을 때(찰싹)', 'toon_fly', 1],
+  ['kill_cucumber', '오이 처치', '오이를 잡았을 때(아삭)', 'toon_cucumber', 2],
+  ['kill_boss', '보스 처치', '로봇청소기·목욕통 보스를 잡았을 때', 'toon_bossdown', 1],
+];
+const KEY = 'np-sfx-pick5';
+let pick = {};
+try { pick = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+const list = document.getElementById('list');
+{
+  const row = document.createElement('section'); row.className = 'row';
+  row.innerHTML = `<div class="head"><b>지금 게임에 들어간 소리</b><span>"안 돼요" 소리는 없앴습니다. 안 되는 행동은 버튼이 꺼지거나 고양이가 벽에 살짝 부딪혔다 돌아옵니다.</span>
+    <button class="play-all">차례로 듣기</button></div>
+    <div class="opts">${INGAME.map(([k, name, from, src]) => `
+      <div class="opt"><div class="t" style="flex-direction:column;align-items:flex-start;gap:2px"><span>${name}</span><small>${from}</small></div>
+        <audio controls preload="none" src="${src}"></audio></div>`).join('')}</div>`;
+  list.appendChild(row);
+}
+for (const [k, name, desc, file, inGame] of NEW) {
+  const row = document.createElement('section'); row.className = 'row';
+  const chosen = pick[k] || String(inGame);
+  row.innerHTML = `<div class="head"><b>${name}</b><span>${desc} · <code>${k}</code></span>
+    <button class="play-all">차례로 듣기</button></div>
+    <div class="opts three">${[1, 2, 3].map(i => `
+      <label class="opt"><div class="t"><span>새로 ${i} ${i === inGame ? '<span class="tag">게임에 넣음</span>' : ''}</span>
+        <input type="radio" name="${k}" value="${i}" ${chosen === String(i) ? 'checked' : ''}></div>
+        <audio controls preload="none" src="cut/${file}_${i}.wav"></audio></label>`).join('')}</div>`;
+  list.appendChild(row);
+}
+function summary() {
+  const parts = NEW.map(([k, name, , , inGame]) => {
+    const v = pick[k] || String(inGame);
+    return `${name}(${k})=새로 ${v}${v === String(inGame) ? '' : ' ← 바꾸기'}`;
+  });
+  document.getElementById('sum').textContent = parts.join(', ');
+  return parts.join(', ');
+}
+document.addEventListener('change', e => {
+  if (e.target.type !== 'radio') return;
+  pick[e.target.name] = e.target.value; summary();
+  try { localStorage.setItem(KEY, JSON.stringify(pick)); } catch (err) {}
+});
+document.addEventListener('play', e => { document.querySelectorAll('audio').forEach(a => { if (a !== e.target) a.pause(); }); }, true);
+document.addEventListener('click', async e => {
+  const b = e.target.closest('.play-all'); if (!b) return;
+  for (const a of b.closest('.row').querySelectorAll('audio')) {
+    a.currentTime = 0;
+    try { await a.play(); } catch (err) { continue; }
+    await new Promise(r => { const stop = () => { a.pause(); r(); }; a.onended = r; setTimeout(stop, 2500); });
+  }
+});
+document.getElementById('copy').onclick = () => { const t = summary() || ''; navigator.clipboard && navigator.clipboard.writeText(t).catch(() => {}); };
+summary();
+</script>
+</body></html>

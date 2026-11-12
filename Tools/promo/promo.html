@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>냥펀치 홍보 이미지</title>
+<style>
+  @font-face { font-family: 'Jua'; src: url('Jua.ttf') format('truetype'); }
+  body { margin: 16px; background: #eee; font-family: sans-serif; }
+  canvas { display: block; margin: 0 0 16px; max-width: 100%; border: 1px solid #ccc; }
+</style></head>
+<body>
+<p id="st">그리는 중…</p>
+<div id="out"></div>
+<script src="draw.js"></script>
+<script>
+const FLOOR_A = '#dfe4f4', FLOOR_B = '#d1d8ee';
+
+function floor(w, h, tile) {
+  ctx.fillStyle = FLOOR_A; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = FLOOR_B;
+  for (let i = 0; i * tile < w; i++) for (let j = 0; j * tile < h; j++) if (((i + j) & 1) === 0) ctx.fillRect(i * tile, j * tile, tile, tile);
+  const spots = [[0.08, 0.2, 0.4], [0.9, 0.12, -0.6], [0.22, 0.85, 1.2], [0.75, 0.78, 2.2], [0.55, 0.1, 0.9], [0.95, 0.6, -1.4]];
+  for (const [x, y, r] of spots) { ctx.save(); ctx.translate(x * w, y * h); ctx.rotate(r); pawShape(0, 0, 1.6, 'rgba(43,34,51,.07)'); ctx.restore(); }
+}
+
+function title(str, x, y, size) {
+  ctx.font = `${size}px Jua`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+  ctx.fillStyle = INK; ctx.fillText(str, x + size * 0.05, y + size * 0.07);          // ink drop shadow
+  ctx.lineWidth = size * 0.16; ctx.strokeStyle = INK; ctx.strokeText(str, x, y);
+  ctx.fillStyle = BUTTER; ctx.fillText(str, x, y);
+}
+
+function pill(str, x, y, size, fill, color) {
+  ctx.font = `${size}px Jua`; const w = ctx.measureText(str).width + size * 1.4, h = size * 1.7;
+  rrect(x - w / 2, y - h / 2, w, h, h / 2); fs(fill, 3);
+  ctx.fillStyle = color; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(str, x, y + size * 0.05);
+}
+
+function at(x, y, s, fn) { ctx.save(); ctx.translate(x, y); ctx.scale(s, s); fn(); ctx.restore(); }
+const P = (face) => ({ face: face || 1, flash: 0, seed: 1 });
+
+function swipe(x, y, r, a) {
+  ctx.save(); ctx.lineCap = 'round';
+  for (let i = 0; i < 3; i++) {
+    ctx.beginPath(); ctx.arc(x, y, r * (0.6 + i * 0.2), a - 0.75, a + 0.75);
+    ctx.lineWidth = 9; ctx.strokeStyle = INK; ctx.stroke(); ctx.lineWidth = 4.5; ctx.strokeStyle = '#fff'; ctx.stroke();
+  }
+  ctx.restore();
+}
+function puffAt(x, y, r) { circle(x, y, r); fs('#fff', 2.5); }
+
+// ---------- cover 630x500 ----------
+function cover() {
+  const W = 630, H = 500;
+  floor(W, H, 70);
+  // box tower on the left
+  at(105, 470, 2.0, () => drawBox(7, 0, 0));
+  at(215, 476, 1.25, () => drawBox(3, 0, 0));
+  at(40, 478, 0.9, () => drawBox(2, 0, 0));
+  // enemies on the right
+  at(520, 430, 1.25, () => drawVacuum(P(-1), 0.4));
+  at(560, 300, 1.7, () => drawCucumber(P(-1), 0.3));
+  ctx.save(); ctx.translate(470, 250); ctx.rotate(-0.5); ctx.scale(1.9, 1.9); drawMouse(P(-1), 0.2, false); ctx.restore();
+  puffAt(430, 262, 9); puffAt(445, 238, 6); puffAt(418, 240, 5);
+  // hero cat punching to the right
+  drawCat(330, 340, 1, 0.07, true, '', 0.5, 3.2);
+  swipe(370, 300, 95, -0.35);
+  // churu sparkles
+  churuShape(250, 230, 1.6, -0.5); churuShape(600, 200, 1.4, 0.6); churuShape(300, 470, 1.3, 1.1);
+  // title
+  title('냥펀치', W / 2, 92, 118);
+  pill('박스 은신처  ×  거실 방어', W / 2, 172, 24, INK, '#ffffff');
+}
+
+// ---------- banner 960x240 ----------
+function banner() {
+  const W = 960, H = 240;
+  floor(W, H, 60);
+  title('냥펀치', 170, 100, 104);
+  pill('상자를 합쳐 은신처를 키우고, 한 칸씩 거실을 지켜요', 245, 192, 18, INK, '#ffffff');
+  const xs = [478, 540, 610, 690, 778];
+  [1, 2, 3, 4, 6].forEach((t, i) => at(xs[i], 222, 0.75 + i * 0.12, () => drawBox(t, 0, 0)));
+  drawCat(868, 160, -1, 0, false, '', 0.5, 1.8);
+  ctx.save(); ctx.translate(930, 216); ctx.scale(-1.0, 1.0); drawMouse(P(1), 0, false); ctx.restore();
+  churuShape(470, 70, 1.3, -0.4); churuShape(700, 60, 1.2, 0.5);
+}
+
+
+// ---------- embed background 450x800 (behind itch's Run game button) ----------
+function embedBg() {
+  const W = 450, H = 800;
+  floor(W, H, 75);
+  title('냥펀치', W / 2, 120, 104);
+  pill('박스 은신처  ×  거실 방어', W / 2, 205, 20, INK, '#ffffff');
+  at(95, 760, 1.6, () => drawBox(6, 0, 0));
+  at(355, 765, 1.5, () => drawBox(4, 0, 0));
+  drawCat(W / 2, 560, 1, 0, false, '', 0.5, 2.6);
+  ctx.save(); ctx.translate(380, 470); ctx.rotate(-0.4); ctx.scale(1.4, 1.4); drawMouse(P(-1), 0.2, false); ctx.restore();
+  at(70, 455, 1.2, () => drawCucumber(P(1), 0.3));
+  churuShape(110, 330, 1.4, -0.5); churuShape(350, 340, 1.3, 0.6);
+}
+
+async function render(name, w, h, scale, fn) {
+  const cv = document.createElement('canvas'); cv.width = w * scale; cv.height = h * scale;
+  ctx = cv.getContext('2d'); ctx.setTransform(scale, 0, 0, scale, 0, 0); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  fn();
+  document.getElementById('out').appendChild(cv);
+  const r = await fetch('/save/' + name, { method: 'POST', body: cv.toDataURL('image/png') });
+  if (!r.ok) throw new Error('save failed ' + name);
+}
+
+(async () => {
+  await document.fonts.load('100px Jua');
+  await render('cover_630x500', 630, 500, 2, cover);
+  await render('banner_960x240', 960, 240, 2, banner);
+  await render('embedbg_450x800', 450, 800, 1, embedBg);
+  document.getElementById('st').textContent = '완료';
+  window.__done = true;
+})().catch(e => { document.getElementById('st').textContent = '오류: ' + e.message; window.__done = 'error ' + e.message; });
+</script>
+</body></html>

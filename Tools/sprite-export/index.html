@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>냥펀치 스프라이트 추출</title></head>
+<body style="font-family:sans-serif;background:#eee">
+<p id="st">추출 중…</p>
+<div id="prev" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+<script src="draw.js"></script>
+<script>
+// Each sprite: logical canvas w×h (game units), origin (ox,oy) where the draw call's (0,0) sits, export scale.
+const S = 3;
+const sprites = [];
+const add = (name, w, h, ox, oy, fn, scale) => sprites.push({ name, w, h, ox, oy, fn, scale: scale || S });
+
+// cat (drawCat draws around its own origin)
+for (const [n, mood, moving, walk] of [['cat_idle', '', false, 0], ['cat_blink', 'blink', false, 0], ['cat_hurt', 'hurt', false, 0], ['cat_ko', 'ko', false, 0], ['cat_walk1', '', true, 0.07], ['cat_walk2', '', true, 0.21]])
+  add(n, 72, 64, 38, 34, () => drawCat(0, 0, 1, walk, moving, mood, 0, 1));
+
+// enemies (proxy object like the game uses)
+const P = { face: 1, flash: 0, seed: 0 };
+add('enemy_mouse', 64, 44, 34, 26, () => drawMouse(P, 0, false));
+add('enemy_rat', 64, 44, 34, 26, () => drawMouse(P, 0, true));
+add('enemy_fly', 40, 48, 20, 30, () => drawFly(P, 0));
+add('enemy_cucumber', 40, 64, 20, 34, () => drawCucumber(P, 0));
+add('enemy_vacuum', 112, 92, 56, 48, () => drawVacuum(P, 0));
+add('enemy_tub', 130, 104, 65, 56, () => drawTub(P, 0));
+
+// boxes 1..8: origin at bottom-centre
+for (let t = 1; t <= 8; t++) add('box_' + t, 100, 112, 50, 106, () => drawBox(t, 0, 0));
+
+// obstacles (drawObstacle scales by cs/70; use cs=70 => scale 1)
+add('obs_cushion', 70, 70, 35, 36, () => drawObstacle(1, 0, 0, 70));
+add('obs_plant', 70, 70, 35, 36, () => drawObstacle(2, 0, 0, 70));
+
+// icons
+add('icon_churu', 22, 30, 11, 15, () => churuShape(0, 0, 1.1, 0));
+add('icon_paw', 24, 24, 12, 13, () => pawShape(0, 0, 1, '#ffffff'));
+add('icon_heart', 24, 22, 12, 11, () => { ctx.beginPath(); ctx.moveTo(0, 8); ctx.bezierCurveTo(-13, 0, -9, -12, 0, -4); ctx.bezierCurveTo(9, -12, 13, 0, 0, 8); ctx.lineJoin = 'round'; fs(TOMATO, 2.2); });
+add('icon_yarn', 36, 36, 18, 18, () => {
+  circle(0, 0, 14); fs(TOMATO, 3);
+  ctx.strokeStyle = '#ffc1c5'; ctx.lineWidth = 2.2;
+  ctx.beginPath(); ctx.arc(-17, -2, 15, -0.75, 0.75); ctx.stroke();
+  ctx.beginPath(); ctx.arc(17, 2, 15, Math.PI - 0.75, Math.PI + 0.75); ctx.stroke();
+});
+add('fx_puff', 20, 20, 10, 10, () => { circle(0, 0, 7); fs('#ffffff', 2); });
+add('fx_mark', 40, 40, 20, 20, () => { ctx.setLineDash([5, 5]); circle(0, 0, 16); ctx.lineWidth = 3; ctx.strokeStyle = TOMATO; ctx.stroke(); ctx.setLineDash([]); });
+add('fx_bang', 30, 30, 15, 15, () => { circle(0, 0, 11); fs(TOMATO, 2.5); });
+add('fx_ring', 64, 64, 32, 32, () => { circle(0, 0, 28); ctx.lineWidth = 5; ctx.strokeStyle = TOMATO; ctx.stroke(); });
+
+// UI 9-slice pieces (scale 2): white fill, ink ring
+add('ui_fill', 48, 48, 0, 0, () => { rrect(2, 2, 44, 44, 14); ctx.fillStyle = '#ffffff'; ctx.fill(); }, 2);
+add('ui_ring', 48, 48, 0, 0, () => { rrect(2, 2, 44, 44, 14); ctx.lineWidth = 3.5; ctx.strokeStyle = INK; ctx.stroke(); }, 2);
+add('ui_pill', 48, 48, 0, 0, () => { rrect(2, 2, 44, 44, 22); ctx.fillStyle = '#ffffff'; ctx.fill(); }, 2);
+add('ui_pill_ring', 48, 48, 0, 0, () => { rrect(2, 2, 44, 44, 22); ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke(); }, 2);
+add('ui_cell', 48, 48, 0, 0, () => { rrect(3, 3, 42, 42, 10); ctx.fillStyle = '#ffffff'; ctx.fill(); }, 2);
+
+(async () => {
+  const meta = {};
+  for (const sp of sprites) {
+    const cv = document.createElement('canvas');
+    cv.width = Math.round(sp.w * sp.scale); cv.height = Math.round(sp.h * sp.scale);
+    ctx = cv.getContext('2d');
+    ctx.setTransform(sp.scale, 0, 0, sp.scale, sp.ox * sp.scale, sp.oy * sp.scale);
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    sp.fn();
+    const data = cv.toDataURL('image/png');
+    const r = await fetch('/save/' + sp.name, { method: 'POST', body: data });
+    if (!r.ok) throw new Error('save failed ' + sp.name);
+    meta[sp.name] = { w: sp.w, h: sp.h, ox: sp.ox, oy: sp.oy, scale: sp.scale };
+    const img = new Image(); img.src = data; img.title = sp.name; img.style.cssText = 'height:80px;background:#fff;border:1px solid #ccc';
+    document.getElementById('prev').appendChild(img);
+  }
+  await fetch('/meta', { method: 'POST', body: JSON.stringify(meta, null, 1) });
+  document.getElementById('st').textContent = '완료: ' + sprites.length + '개';
+  window.__done = sprites.length;
+})().catch(e => { document.getElementById('st').textContent = '오류: ' + e.message; window.__done = -1; });
+</script>
+</body></html>

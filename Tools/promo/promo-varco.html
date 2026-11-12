@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>냥펀치 홍보 이미지 (바르코3D)</title>
+<style>
+  @font-face { font-family: 'Jua'; src: url('Jua.ttf') format('truetype'); }
+  body { margin: 16px; background: #eee; font-family: sans-serif; }
+  canvas { display: block; margin: 0 0 16px; max-width: 100%; border: 1px solid #ccc; }
+</style></head>
+<body>
+<p id="st">합성 중…</p>
+<div id="out"></div>
+<script>
+const INK = '#2b2233', BUTTER = '#ffd23f';
+let ctx;
+const load = src => new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = src; });
+
+// draw `img` to fill w×h (cover fit), with optional focus point fx,fy (0..1) in the source
+function coverFit(img, w, h, fx, fy) {
+  const s = Math.max(w / img.width, h / img.height);
+  const sw = w / s, sh = h / s;
+  const sx = Math.min(Math.max(img.width * fx - sw / 2, 0), img.width - sw);
+  const sy = Math.min(Math.max(img.height * fy - sh / 2, 0), img.height - sh);
+  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
+}
+function title(str, x, y, size) {
+  ctx.font = `${size}px Jua`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+  ctx.fillStyle = INK; ctx.fillText(str, x + size * 0.05, y + size * 0.07);
+  ctx.lineWidth = size * 0.16; ctx.strokeStyle = INK; ctx.strokeText(str, x, y);
+  ctx.fillStyle = BUTTER; ctx.fillText(str, x, y);
+}
+function pill(str, x, y, size) {
+  ctx.font = `${size}px Jua`; const w = ctx.measureText(str).width + size * 1.4, h = size * 1.7;
+  ctx.beginPath(); ctx.roundRect(x - w / 2, y - h / 2, w, h, h / 2); ctx.fillStyle = INK; ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(str, x, y + size * 0.05);
+}
+
+async function render(name, w, h, scale, fn) {
+  const cv = document.createElement('canvas'); cv.width = w * scale; cv.height = h * scale;
+  ctx = cv.getContext('2d'); ctx.imageSmoothingQuality = 'high'; ctx.setTransform(scale, 0, 0, scale, 0, 0);
+  await fn(w, h);
+  document.getElementById('out').appendChild(cv);
+  const r = await fetch('/save/' + name, { method: 'POST', body: cv.toDataURL('image/png') });
+  if (!r.ok) throw new Error('save failed ' + name);
+}
+
+(async () => {
+  await document.fonts.load('100px Jua');
+  const coverA = await load('varco/cover_a.png'), coverB = await load('varco/cover_b.png'), tallB = await load('varco/tall_b.png');
+  await render('varco_cover_630x500', 630, 500, 2, (w, h) => {
+    coverFit(coverA, w, h, 0.5, 0.55);
+    title('냥펀치', w / 2, 82, 104);
+    pill('박스 은신처  ×  거실 방어', w / 2, 152, 21);
+  });
+  await render('varco_banner_960x240', 960, 240, 2, (w, h) => {
+    coverFit(coverB, w, h, 0.5, 0.5);
+    const g = ctx.createLinearGradient(0, 0, 460, 0); g.addColorStop(0, 'rgba(255,250,242,.85)'); g.addColorStop(1, 'rgba(255,250,242,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, 460, h);
+    title('냥펀치', 175, 100, 100);
+    pill('상자를 합쳐 은신처를 키우고, 한 칸씩 거실을 지켜요', 225, 190, 17);
+  });
+  // itch draws its "Run game" button at the centre (about y 375-445), so keep that band empty:
+  // fill with the picture's own wall colour and slide the scene down so the cat's ears start below the button.
+  await render('varco_embedbg_450x800', 450, 800, 1, (w, h) => {
+    const s = w / tallB.width, dh = tallB.height * s, shift = 150;
+    const probe = document.createElement('canvas'); probe.width = 1; probe.height = 1;
+    const pc = probe.getContext('2d'); pc.drawImage(tallB, tallB.width / 2, 8, 1, 1, 0, 0, 1, 1);
+    const [r, g, b] = pc.getImageData(0, 0, 1, 1).data;
+    ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')'; ctx.fillRect(0, 0, w, h);
+    ctx.drawImage(tallB, 0, shift, w, dh);
+    const fade = ctx.createLinearGradient(0, shift, 0, shift + 40);
+    fade.addColorStop(0, 'rgb(' + r + ',' + g + ',' + b + ')'); fade.addColorStop(1, 'rgba(' + r + ',' + g + ',' + b + ',0)');
+    ctx.fillStyle = fade; ctx.fillRect(0, shift, w, 40);
+    title('냥펀치', w / 2, 120, 100);
+    pill('박스 은신처  ×  거실 방어', w / 2, 200, 20);
+  });
+  document.getElementById('st').textContent = '완료';
+  window.__done = true;
+})().catch(e => { document.getElementById('st').textContent = '오류: ' + e.message; window.__done = 'error ' + e.message; });
+</script>
+</body></html>

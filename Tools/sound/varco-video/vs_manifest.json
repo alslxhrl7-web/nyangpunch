@@ -1,0 +1,778 @@
+{
+ "clear": {
+  "project": "Cat And Mouse Game",
+  "mix": "vs_clear__mix.mp4",
+  "tracks": [
+   {
+    "name": "Cat pounce poof",
+    "category": "Sfx",
+    "file": "vs_clear__t01.mp3",
+    "at": 0.75,
+    "from": 0,
+    "to": 1.5,
+    "volume": 2,
+    "fileDur": 8.91
+   },
+   {
+    "name": "Ui score blip",
+    "category": "Sfx",
+    "file": "vs_clear__t02.mp3",
+    "at": 0.8,
+    "from": 0,
+    "to": 1.46,
+    "volume": 2,
+    "fileDur": 1.46
+   },
+   {
+    "name": "Item spawn pops",
+    "category": "Sfx",
+    "file": "vs_clear__t03.mp3",
+    "at": 0.85,
+    "from": 0,
+    "to": 1.5,
+    "volume": 0.6167,
+    "fileDur": 9.9
+   },
+   {
+    "name": "Ui window appear whoosh",
+    "category": "Sfx",
+    "file": "vs_clear__t04.mp3",
+    "at": 1.15,
+    "from": 0,
+    "to": 1.5,
+    "volume": 1.9159,
+    "fileDur": 9.23
+   },
+   {
+    "name": "Ui score counter",
+    "category": "Sfx",
+    "file": "vs_clear__t05.mp3",
+    "at": 1.2,
+    "from": 0,
+    "to": 1.5000000000000002,
+    "volume": 2,
+    "fileDur": 3.84
+   },
+   {
+    "name": "Ui success chime",
+    "category": "Sfx",
+    "file": "vs_clear__t06.mp3",
+    "at": 1.25,
+    "from": 0,
+    "to": 1.5,
+    "volume": 2,
+    "fileDur": 2.26
+   },
+   {
+    "name": "Ui coin gain",
+    "category": "Sfx",
+    "file": "vs_clear__t07.mp3",
+    "at": 1.3,
+    "from": 0,
+    "to": 0.85,
+    "volume": 2,
+    "fileDur": 0.85
+   }
+  ]
+ },
+ "boss": {
+  "project": "Cartoon Cat Puzzle Game",
+  "mix": "vs_boss__mix.mp4",
+  "tracks": [
+   {
+    "name": "Ui target arrow pop",
+    "category": "Sfx",
+    "file": "vs_boss__t01.mp3",
+    "at": 1.05,
+    "from": 0,
+    "to": 0.42,
+    "volume": 1.1857,
+    "fileDur": 0.42
+   },
+   {
+    "name": "Cat dash preparation whoosh",
+    "category": "Sfx",
+    "file": "vs_boss__t02.mp3",
+    "at": 1.85,
+    "from": 0,
+    "to": 0.55,
+    "volume": 2,
+    "fileDur": 0.55
+   },
+   {
+    "name": "Cat dash movement",
+    "category": "Sfx",
+    "file": "vs_boss__t03.mp3",
+    "at": 1.95,
+    "from": 0,
+    "to": 1.1,
+    "volume": 1.1254,
+    "fileDur": 1.1
+   },
+   {
+    "name": "Enemy damage impact",
+    "category": "Sfx",
+    "file": "vs_boss__t04.mp3",
+    "at": 2.05,
+    "from": 0,
+    "to": 1.5,
+    "volume": 1.854,
+    "fileDur": 8.64
+   },
+   {
+    "name": "Damage sparkle poof",
+    "category": "Sfx",
+    "file": "vs_boss__t05.mp3",
+    "at": 2.1,
+    "from": 0,
+    "to": 1.5,
+    "volume": 1.4838,
+    "fileDur": 9.06
+   },
+   {
+    "name": "Score increase chime",
+    "category": "Sfx",
+    "file": "vs_boss__t06.mp3",
+    "at": 2.65,
+    "from": 0,
+    "to": 1.5000000000000004,
+    "volume": 2,
+    "fileDur": 1.82
+   },
+   {
+    "name": "Cat hop",
+    "category": "Sfx",
+    "file": "vs_boss__t07.mp3",
+    "at": 4.1,
+    "from": 0,
+    "to": 1.42,
+    "volume": 2,
+    "fileDur": 1.42
+   },
+   {
+    "name": "Enemy damage bonk",
+    "category": "Sfx",
+    "file": "vs_boss__t08.mp3",
+    "at": 4.85,
+    "from": 0,
+    "to": 1.14,
+    "volume": 2,
+    "fileDur": 1.14
+   },
+   {
+    "name": "Damage number poof",
+    "category": "Sfx",
+    "file": "vs_boss__t09.mp3",
+    "at": 4.9,
+    "from": 0,
+    "to": 1.5,
+    "volume": 0.759,
+    "fileDur": 7.11
+   },
+   {
+    "name": "Ui target arrow pop",
+    "category": "Sfx",
+    "file": "vs_boss__t10.mp3",
+    "at": 5.05,
+    "from": 0,
+    "to": 1.5,
+    "volume": 2,
+    "fileDur": 5.33
+   },
+   {
+    "name": "Score increase chime",
+    "category": "Sfx",
+    "file": "vs_boss__t11.mp3",
+    "at": 5.55,
+    "from": 0,
+    "to": 1.5,
+    "volume": 1.8091,
+    "fileDur": 1.61
+   },
+   {
+    "name": "Cat dash preparation whoosh",
+    "category": "Sfx",
+    "file": "vs_boss__t12.mp3",
+    "at": 5.7,
+    "from": 0,
+    "to": 0.99,
+    "volume": 1.3591,
+    "fileDur": 0.99
+   },
+   {
+    "name": "Cat dash movement",
+    "category": "Sfx",
+    "file": "vs_boss__t13.mp3",
+    "at": 5.8,
+    "from": 0,
+    "to": 1.4000000000000004,
+    "volume": 2,
+    "fileDur": 4.86
+   },
+   {
+    "name": "Health loss alert",
+    "category": "Sfx",
+    "file": "vs_boss__t14.mp3",
+    "at": 6,
+    "from": 0,
+    "to": 0.35,
+    "volume": 2,
+    "fileDur": 0.35
+   },
+   {
+    "name": "Enemy critical damage impact",
+    "category": "Sfx",
+    "file": "vs_boss__t15.mp3",
+    "at": 6,
+    "from": 0,
+    "to": 1.2000000000000002,
+    "volume": 2,
+    "fileDur": 5.32
+   },
+   {
+    "name": "Damage number poof",
+    "category": "Sfx",
+    "file": "vs_boss__t16.mp3",
+    "at": 6.05,
+    "from": 0,
+    "to": 1.1500000000000004,
+    "volume": 1.2202,
+    "fileDur": 6.02
+   }
+  ]
+ },
+ "hurt": {
+  "project": "Cat And Mouse Game",
+  "mix": "vs_hurt__mix.mp4",
+  "tracks": [
+   {
+    "name": "Ui ambience",
+    "category": "Ambience",
+    "file": "vs_hurt__t01.mp3",
+    "at": 0,
+    "from": 0,
+    "to": 5.42,
+    "volume": 2,
+    "fileDur": 10.24
+   },
+   {
+    "name": "Cat attack",
+    "category": "Sfx",
+    "file": "vs_hurt__t02.mp3",
+    "at": 1.2,
+    "from": 0,
+    "to": 1.5000000000000002,
+    "volume": 2,
+    "fileDur": 5.15
+   },
+   {
+    "name": "Mouse defeat poof",
+    "category": "Sfx",
+    "file": "vs_hurt__t03.mp3",
+    "at": 2.35,
+    "from": 0,
+    "to": 1.5,
+    "volume": 1.7129,
+    "fileDur": 9.34
+   },
+   {
+    "name": "Game over popup",
+    "category": "Sfx",
+    "file": "vs_hurt__t04.mp3",
+    "at": 2.85,
+    "from": 0,
+    "to": 1.4999999999999996,
+    "volume": 2,
+    "fileDur": 8.86
+   }
+  ]
+ },
+ "skills": {
+  "project": "Cat And Mouse Game",
+  "mix": "vs_skills__mix.mp4",
+  "tracks": [
+   {
+    "name": "Game ui ambience",
+    "category": "Ambience",
+    "file": "vs_skills__t01.mp3",
+    "at": 0,
+    "from": 0,
+    "to": 5.233,
+    "volume": 2,
+    "fileDur": 10.24
+   },
+   {
+    "name": "Bomb fall whistle",
+    "category": "Sfx",
+    "file": "vs_skills__t02.mp3",
+    "at": 0.1,
+    "from": 0,
+    "to": 2.15,
+    "volume": 2,
+    "fileDur": 9.5
+   },
+   {
+    "name": "Bomb impact poof",
+    "category": "Sfx",
+    "file": "vs_skills__t03.mp3",
+    "at": 0.75,
+    "from": 0,
+    "to": 1.5,
+    "volume": 0.8233,
+    "fileDur": 4.18
+   },
+   {
+    "name": "Point gain chime",
+    "category": "Sfx",
+    "file": "vs_skills__t04.mp3",
+    "at": 0.78,
+    "from": 0,
+    "to": 1.4999999999999998,
+    "volume": 2,
+    "fileDur": 1.82
+   },
+   {
+    "name": "Ball materialize poof",
+    "category": "Sfx",
+    "file": "vs_skills__t05.mp3",
+    "at": 0.88,
+    "from": 0,
+    "to": 1.5,
+    "volume": 1.4255,
+    "fileDur": 4.8
+   },
+   {
+    "name": "Warning ui alert",
+    "category": "Sfx",
+    "file": "vs_skills__t06.mp3",
+    "at": 1.1,
+    "from": 0,
+    "to": 0.94,
+    "volume": 1.2877,
+    "fileDur": 0.94
+   },
+   {
+    "name": "Cactus sleeping zzz",
+    "category": "Sfx",
+    "file": "vs_skills__t07.mp3",
+    "at": 1.1,
+    "from": 0,
+    "to": 2.22,
+    "volume": 2,
+    "fileDur": 2.22
+   },
+   {
+    "name": "Ball bounce",
+    "category": "Sfx",
+    "file": "vs_skills__t08.mp3",
+    "at": 1.2,
+    "from": 0,
+    "to": 1.5000000000000002,
+    "volume": 2,
+    "fileDur": 2.59
+   },
+   {
+    "name": "Targeting reticle whoosh",
+    "category": "Sfx",
+    "file": "vs_skills__t09.mp3",
+    "at": 2.1,
+    "from": 0,
+    "to": 0.71,
+    "volume": 1.3158,
+    "fileDur": 0.71
+   },
+   {
+    "name": "Mouse lunge squeak",
+    "category": "Sfx",
+    "file": "vs_skills__t10.mp3",
+    "at": 3.6,
+    "from": 0,
+    "to": 1.4999999999999996,
+    "volume": 2,
+    "fileDur": 1.74
+   },
+   {
+    "name": "Mouse attack hit",
+    "category": "Sfx",
+    "file": "vs_skills__t11.mp3",
+    "at": 3.7,
+    "from": 0,
+    "to": 1.5,
+    "volume": 1.43,
+    "fileDur": 6.29
+   },
+   {
+    "name": "Damage ui thud",
+    "category": "Sfx",
+    "file": "vs_skills__t12.mp3",
+    "at": 3.75,
+    "from": 0,
+    "to": 0.85,
+    "volume": 1.8285,
+    "fileDur": 0.85
+   }
+  ]
+ },
+ "punch": {
+  "project": "Cat And Mouse Game",
+  "mix": "vs_punch__mix.mp4",
+  "tracks": [
+   {
+    "name": "Score tick",
+    "category": "Sfx",
+    "file": "vs_punch__t01.mp3",
+    "at": 0.38,
+    "from": 0,
+    "to": 1.5,
+    "volume": 0.8701,
+    "fileDur": 3.72
+   },
+   {
+    "name": "Question mark popup",
+    "category": "Sfx",
+    "file": "vs_punch__t02.mp3",
+    "at": 1.1,
+    "from": 0,
+    "to": 0.58,
+    "volume": 0.5334,
+    "fileDur": 0.58
+   },
+   {
+    "name": "Tile highlight 1",
+    "category": "Sfx",
+    "file": "vs_punch__t03.mp3",
+    "at": 1.15,
+    "from": 0,
+    "to": 1.5,
+    "volume": 1.237,
+    "fileDur": 1.86
+   },
+   {
+    "name": "Tile highlight 2",
+    "category": "Sfx",
+    "file": "vs_punch__t04.mp3",
+    "at": 1.25,
+    "from": 0,
+    "to": 1.36,
+    "volume": 2,
+    "fileDur": 1.36
+   },
+   {
+    "name": "Tile highlight 3",
+    "category": "Sfx",
+    "file": "vs_punch__t05.mp3",
+    "at": 1.35,
+    "from": 0,
+    "to": 1.13,
+    "volume": 2,
+    "fileDur": 1.13
+   },
+   {
+    "name": "Tile highlight 4",
+    "category": "Sfx",
+    "file": "vs_punch__t06.mp3",
+    "at": 1.45,
+    "from": 0,
+    "to": 0.8,
+    "volume": 2,
+    "fileDur": 0.8
+   },
+   {
+    "name": "Tile highlight 5",
+    "category": "Sfx",
+    "file": "vs_punch__t07.mp3",
+    "at": 1.55,
+    "from": 0,
+    "to": 1.4999999999999998,
+    "volume": 2,
+    "fileDur": 2.55
+   },
+   {
+    "name": "Cat attack",
+    "category": "Sfx",
+    "file": "vs_punch__t08.mp3",
+    "at": 1.7,
+    "from": 0,
+    "to": 1.5000000000000002,
+    "volume": 1.3134,
+    "fileDur": 1.94
+   },
+   {
+    "name": "Mouse hit",
+    "category": "Sfx",
+    "file": "vs_punch__t09.mp3",
+    "at": 1.75,
+    "from": 0,
+    "to": 0.97,
+    "volume": 1.9029,
+    "fileDur": 0.97
+   },
+   {
+    "name": "Damage number",
+    "category": "Sfx",
+    "file": "vs_punch__t10.mp3",
+    "at": 1.85,
+    "from": 0,
+    "to": 1.12,
+    "volume": 1.0612,
+    "fileDur": 1.12
+   },
+   {
+    "name": "Life lost",
+    "category": "Sfx",
+    "file": "vs_punch__t11.mp3",
+    "at": 2.55,
+    "from": 0,
+    "to": 1.09,
+    "volume": 0.8905,
+    "fileDur": 1.09
+   },
+   {
+    "name": "Score tick",
+    "category": "Sfx",
+    "file": "vs_punch__t12.mp3",
+    "at": 2.58,
+    "from": 0,
+    "to": 1.5,
+    "volume": 1.7781,
+    "fileDur": 7.52
+   },
+   {
+    "name": "Score number popup",
+    "category": "Sfx",
+    "file": "vs_punch__t13.mp3",
+    "at": 2.6,
+    "from": 0,
+    "to": 0.81,
+    "volume": 2,
+    "fileDur": 0.81
+   },
+   {
+    "name": "Mouse disappear",
+    "category": "Sfx",
+    "file": "vs_punch__t14.mp3",
+    "at": 2.65,
+    "from": 0,
+    "to": 1.5000000000000004,
+    "volume": 1.3396,
+    "fileDur": 1.73
+   },
+   {
+    "name": "Ui element disappear 1",
+    "category": "Sfx",
+    "file": "vs_punch__t15.mp3",
+    "at": 3.5,
+    "from": 0,
+    "to": 1.5,
+    "volume": 2,
+    "fileDur": 2.22
+   },
+   {
+    "name": "Score tick",
+    "category": "Sfx",
+    "file": "vs_punch__t16.mp3",
+    "at": 3.5,
+    "from": 0,
+    "to": 1.5,
+    "volume": 1.6429,
+    "fileDur": 4.4
+   },
+   {
+    "name": "Ui element disappear 2",
+    "category": "Sfx",
+    "file": "vs_punch__t17.mp3",
+    "at": 3.6,
+    "from": 0,
+    "to": 0.34,
+    "volume": 2,
+    "fileDur": 0.34
+   },
+   {
+    "name": "Exclamation mark popup",
+    "category": "Sfx",
+    "file": "vs_punch__t18.mp3",
+    "at": 3.8,
+    "from": 0,
+    "to": 0.79,
+    "volume": 0.8646,
+    "fileDur": 0.79
+   },
+   {
+    "name": "Cat hop",
+    "category": "Sfx",
+    "file": "vs_punch__t19.mp3",
+    "at": 3.9,
+    "from": 0,
+    "to": 0.52,
+    "volume": 2,
+    "fileDur": 0.52
+   },
+   {
+    "name": "Ui element disappear 3",
+    "category": "Sfx",
+    "file": "vs_punch__t20.mp3",
+    "at": 4.3,
+    "from": 0,
+    "to": 1.0330000000000004,
+    "volume": 1.6728,
+    "fileDur": 2.38
+   }
+  ]
+ },
+ "hideout": {
+  "project": "Puzzle Game Box Merge",
+  "mix": "vs_hideout__mix.mp4",
+  "tracks": [
+   {
+    "name": "Ui ambience",
+    "category": "Ambience",
+    "file": "vs_hideout__t01.mp3",
+    "at": 0,
+    "from": 0,
+    "to": 6.8,
+    "volume": 2,
+    "fileDur": 10.22
+   },
+   {
+    "name": "Box spawn pop 1",
+    "category": "Sfx",
+    "file": "vs_hideout__t02.mp3",
+    "at": 0.25,
+    "from": 0,
+    "to": 1.2,
+    "volume": 2,
+    "fileDur": 1.2
+   },
+   {
+    "name": "Box spawn pop 2",
+    "category": "Sfx",
+    "file": "vs_hideout__t03.mp3",
+    "at": 0.85,
+    "from": 0,
+    "to": 1.5,
+    "volume": 2,
+    "fileDur": 9
+   },
+   {
+    "name": "Box spawn pop 3",
+    "category": "Sfx",
+    "file": "vs_hideout__t04.mp3",
+    "at": 1.75,
+    "from": 0,
+    "to": 1,
+    "volume": 1.1253,
+    "fileDur": 1
+   },
+   {
+    "name": "Ui box drag 1",
+    "category": "Foley",
+    "file": "vs_hideout__t05.mp3",
+    "at": 2.4,
+    "from": 0,
+    "to": 0.7000000000000002,
+    "volume": 2,
+    "fileDur": 5.71
+   },
+   {
+    "name": "Box merge chime 1",
+    "category": "Sfx",
+    "file": "vs_hideout__t06.mp3",
+    "at": 2.6,
+    "from": 0,
+    "to": 1.43,
+    "volume": 1.3702,
+    "fileDur": 1.43
+   },
+   {
+    "name": "Ui box drag 2",
+    "category": "Foley",
+    "file": "vs_hideout__t07.mp3",
+    "at": 2.7,
+    "from": 0,
+    "to": 0.6499999999999999,
+    "volume": 2,
+    "fileDur": 1.14
+   },
+   {
+    "name": "Box merge chime 2",
+    "category": "Sfx",
+    "file": "vs_hideout__t08.mp3",
+    "at": 2.85,
+    "from": 0,
+    "to": 1.33,
+    "volume": 2,
+    "fileDur": 1.33
+   },
+   {
+    "name": "Ui box drag 3",
+    "category": "Foley",
+    "file": "vs_hideout__t09.mp3",
+    "at": 3.4,
+    "from": 0,
+    "to": 0.7500000000000004,
+    "volume": 2,
+    "fileDur": 6.24
+   },
+   {
+    "name": "Large box merge chime",
+    "category": "Sfx",
+    "file": "vs_hideout__t10.mp3",
+    "at": 3.65,
+    "from": 0,
+    "to": 1.5000000000000004,
+    "volume": 2,
+    "fileDur": 5.24
+   },
+   {
+    "name": "Merge sparkle",
+    "category": "Sfx",
+    "file": "vs_hideout__t11.mp3",
+    "at": 3.75,
+    "from": 0,
+    "to": 1.5,
+    "volume": 2,
+    "fileDur": 5.9
+   },
+   {
+    "name": "Item reveal chime",
+    "category": "Sfx",
+    "file": "vs_hideout__t12.mp3",
+    "at": 4.25,
+    "from": 0,
+    "to": 0.87,
+    "volume": 1.7509,
+    "fileDur": 0.87
+   },
+   {
+    "name": "Box spawn pop 4",
+    "category": "Sfx",
+    "file": "vs_hideout__t13.mp3",
+    "at": 5.2,
+    "from": 0,
+    "to": 1.5,
+    "volume": 1.2011,
+    "fileDur": 2.42
+   },
+   {
+    "name": "Box spawn pop 5",
+    "category": "Sfx",
+    "file": "vs_hideout__t14.mp3",
+    "at": 5.55,
+    "from": 0,
+    "to": 0.91,
+    "volume": 0.9059,
+    "fileDur": 0.91
+   },
+   {
+    "name": "Box spawn pop 6",
+    "category": "Sfx",
+    "file": "vs_hideout__t15.mp3",
+    "at": 6.1,
+    "from": 0,
+    "to": 0.56,
+    "volume": 1.8274,
+    "fileDur": 0.56
+   }
+  ]
+ }
+}

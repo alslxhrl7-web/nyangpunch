@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>냥펀치 영상 사운드 보고</title>
+<style>
+  @font-face { font-family: 'Jua'; src: url('../../Assets/NyangPunch/Resources/Fonts/Jua.ttf'); }
+  :root { --ink:#2b2233; --paper:#fffaf2; --bg:#dfe4f4; --soft:#5d5368; --ok:#2f9e6d; --mid:#c98a12; --bad:#d2485a; --line:#e3dccd; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: system-ui, sans-serif; line-height: 1.5; }
+  main { max-width: 1180px; margin: 0 auto; padding: 24px 16px 60px; }
+  h1, h2, h3 { font-family: 'Jua', system-ui, sans-serif; font-weight: normal; margin: 0; }
+  h1 { font-size: 34px; } h2 { font-size: 26px; margin-bottom: 4px; } h3 { font-size: 20px; margin: 18px 0 8px; }
+  .sub { color: var(--soft); margin: 4px 0 18px; }
+  .card { background: var(--paper); border: 3px solid var(--ink); border-radius: 18px; padding: 16px; margin-bottom: 18px; box-shadow: 0 4px 0 var(--ink); }
+  .scene { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 18px; }
+  @media (max-width: 760px) { .scene { grid-template-columns: 1fr; } video { max-width: 260px; } }
+  video { width: 100%; border-radius: 12px; border: 2px solid var(--ink); background: #000; display: block; }
+  .what { font-size: 14px; color: var(--soft); margin: 8px 0 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  td, th { padding: 5px 6px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th { font-size: 12px; color: var(--soft); font-weight: 600; }
+  td.t { font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--soft); }
+  .en { color: var(--soft); font-size: 12px; display: block; }
+  .chip { display: inline-block; min-width: 22px; text-align: center; border-radius: 99px; color: #fff; font-weight: 700; font-size: 12px; padding: 1px 7px; }
+  .ok { background: var(--ok); } .mid { background: var(--mid); } .bad { background: var(--bad); }
+  button.play { font: inherit; border: 2px solid var(--ink); background: #fff; border-radius: 8px; padding: 0 8px; cursor: pointer; }
+  button.play.on { background: #ffd23f; }
+  .score { font-family: 'Jua', system-ui, sans-serif; font-size: 18px; margin-top: 6px; }
+  ul { margin: 6px 0; padding-left: 20px; }
+  .pick td:first-child { font-weight: 700; white-space: nowrap; }
+</style></head>
+<body><main>
+  <h1>냥펀치 영상 사운드 보고</h1>
+  <p class="sub">유니티에서 상황별 플레이 6장면을 자동으로 녹화하고, 바르코 사운드 스튜디오에 올려 장면에 맞는 소리를 만들었습니다(영상 1개 300포인트, 모두 1,800포인트).
+  왼쪽 영상은 바르코가 붙인 소리가 그대로 들어간 결과이고, 오른쪽은 바르코가 만든 소리 하나하나입니다. ▶를 누르면 그 소리만 들립니다.</p>
+
+  <section class="card">
+    <h2>요약</h2>
+    <ul>
+      <li><b>잘 맞은 장면:</b> 보스(조준·돌진·벽에 쾅·펀치를 거의 정확한 시점에 짚음), 층 클리어(펀치·보상 창·츄르 소리), 은신처(택배·합치기·새 상자).</li>
+      <li><b>엉뚱한 해석:</b> 털뭉치를 "폭탄"으로, 자는 오이를 "선인장"으로, 맞는 고양이를 "공격하는 고양이"로, 쓰러진 고양이를 "쥐 처치"로 봤습니다. 하악질 소리는 만들지 못했습니다.</li>
+      <li><b>필요 없는 소리:</b> 장면마다 배경 잡음(ambience) 트랙과 점수 틱·칸 강조 같은 UI 소리를 많이 덧붙입니다. 게임에 그대로 쓰기보다는 필요한 소리만 골라 쓰는 게 맞습니다.</li>
+      <li><b>쓸 만한 점:</b> 1차·2차에서 프롬프트로만 만든 효과음보다 짧고 게임다운 소리가 많고, 각 소리가 1~1.5초 구간으로 잘려 나와서 바로 쓰기 좋습니다.</li>
+    </ul>
+    <h3>게임 소리 후보 (영상 결과에서 고른 것)</h3>
+    <table class="pick" id="picks"><tr><th>게임 소리</th><th>쓰이는 곳</th><th>추천 후보</th></tr></table>
+  </section>
+
+  <div id="scenes"></div>
+</main>
+<script>
+const SCENES = [
+  ['hideout', '은신처', '0.8초·1.7초 택배 받기 → 2.6초 상자 합치기 → 3.6초 합치기로 새 상자(알림) → 5.0초 택배'],
+  ['punch', '냥펀치', '0.8초 한 칸 이동 → 1.7초 냥펀치로 쥐를 화분에 쿵 → 쥐 반격 → 2.6초 펀치로 처치 → 3.5초 이동'],
+  ['skills', '스킬', '0.8초 털뭉치를 위로 던져 파리 처치 → 2.0초 하악질로 양옆 쥐 밀어내기 → 3.4초 대기(쥐가 다시 다가옴)'],
+  ['hurt', '맞음', '0.8초 대기 → 쥐 두 마리에게 물림 → 2.0초 대기 → 또 물려 쓰러짐 → 쓰러짐 화면'],
+  ['boss', '보스 로봇청소기', '1.0초 조준 화살표 → 1.8초 고양이가 피함, 청소기 돌진해 벽에 쾅·기절 → 4.0초 이동 → 4.8초·5.7초 펀치 → 다시 조준·돌진'],
+  ['clear', '층 클리어', '0.8초 마지막 쥐 펀치로 처치 → 1.2초 보상 창(츄르 +23, 작은 상자)'],
+];
+// [verdict, Korean note] per track, in the order Varco returned them (vs_manifest.json)
+const NOTES = {
+  hideout: [['bad','배경 잡음, 필요 없음'],['mid','아무 일 없는 시작 부분'],['ok','택배 1'],['ok','택배 2'],['mid','상자 끄는 소리(실제로는 끌지 않음)'],['ok','상자 합치기'],['mid','끄는 소리'],['mid','같은 합치기에 겹침'],['mid','끄는 소리'],['ok','합치기 → 새 상자'],['ok','합치기 반짝임'],['ok','"새 상자" 알림'],['ok','택배 3'],['bad','아무 일 없음'],['bad','아무 일 없음']],
+  punch: [['bad','아무 일 없음'],['mid','"!" 경고 표시(물음표로 봄)'],['mid','칸 강조(필요 없음)'],['mid','칸 강조'],['mid','칸 강조'],['mid','칸 강조'],['mid','칸 강조'],['ok','냥펀치'],['ok','쥐가 화분에 쿵'],['ok','피해 숫자'],['mid','고양이가 물림(시점이 조금 늦음)'],['bad','점수 틱(필요 없음)'],['mid','숫자 팝업'],['ok','쥐 처치'],['mid','UI 사라짐'],['bad','점수 틱'],['mid','UI 사라짐'],['ok','새 적 등장 표시'],['ok','고양이 이동'],['mid','UI 사라짐']],
+  skills: [['bad','배경 잡음'],['bad','폭탄 떨어지는 소리로 오해'],['mid','털뭉치 명중(폭탄 소리)'],['mid','점수 소리'],['mid','털뭉치'],['ok','쥐 "!" 경고'],['bad','자는 오이를 선인장으로 봄'],['mid','털뭉치 굴러감'],['mid','하악질 원(하악질 소리는 아님)'],['ok','쥐가 다가옴'],['mid','쥐 공격'],['mid','피해 소리']],
+  hurt: [['bad','배경 잡음'],['mid','고양이가 물림(고양이 공격으로 봄)'],['bad','실제로는 고양이가 쓰러짐(쥐 처치로 봄)'],['ok','쓰러짐 화면']],
+  boss: [['ok','조준 화살표'],['ok','돌진 준비(청소기를 고양이로 봄)'],['ok','돌진'],['ok','벽에 쾅'],['ok','충돌 반짝임'],['bad','점수 소리(필요 없음)'],['ok','고양이 이동'],['ok','냥펀치'],['ok','피해 숫자'],['ok','다시 조준'],['bad','점수 소리'],['ok','돌진 준비'],['ok','돌진'],['ok','고양이가 받힘'],['ok','강한 충돌'],['ok','피해 숫자']],
+  clear: [['ok','펀치 + 처치'],['mid','점수 소리'],['mid','다음 층 배치'],['ok','보상 창 등장'],['ok','츄르 숫자 올라감'],['ok','클리어 축하'],['ok','츄르 획득']],
+};
+const PICKS = [
+  ['drop', '택배 상자 놓기', [['hideout', 2], ['hideout', 3]]],
+  ['merge', '상자 합치기', [['hideout', 5], ['hideout', 9]]],
+  ['level', '새 상자 / 층 클리어', [['hideout', 11], ['clear', 5]]],
+  ['punch', '냥펀치', [['punch', 7], ['boss', 7], ['clear', 0]]],
+  ['bump', '적이 벽·가구에 부딪힘', [['punch', 8], ['boss', 3]]],
+  ['pop', '적 처치', [['punch', 13]]],
+  ['hurt', '고양이가 맞음', [['boss', 13], ['punch', 10]]],
+  ['boss', '보스 조준(새로 추가할 만함)', [['boss', 0], ['boss', 9]]],
+  ['charge', '보스 돌진(새로 추가할 만함)', [['boss', 1], ['boss', 2]]],
+  ['churu', '츄르 받기', [['clear', 6], ['clear', 4]]],
+  ['clear', '보상 창 등장(새로 추가할 만함)', [['clear', 3]]],
+  ['gameover', '쓰러짐 화면(새로 추가할 만함)', [['hurt', 3]]],
+  ['step', '한 칸 이동', [['punch', 18], ['boss', 6]]],
+  ['throw / hiss / nope', '털뭉치·하악질·안 돼요', []],
+];
+const DIR = 'varco-video/';
+const LABEL = { ok: '맞음', mid: '비슷', bad: '엉뚱' };
+let M, cur = null;
+const audio = new Audio();
+function playSeg(btn, tr) {
+  if (cur === btn) { audio.pause(); btn.classList.remove('on'); cur = null; return; }
+  if (cur) cur.classList.remove('on');
+  document.querySelectorAll('video').forEach(v => v.pause());
+  cur = btn; btn.classList.add('on');
+  audio.src = DIR + tr.file; audio.currentTime = tr.from || 0;
+  audio.play().catch(() => {});
+  const stopAt = tr.to || 99;
+  audio.ontimeupdate = () => { if (audio.currentTime >= stopAt) { audio.pause(); btn.classList.remove('on'); cur = null; } };
+  audio.onended = () => { btn.classList.remove('on'); cur = null; };
+}
+function btnFor(scene, i) {
+  const tr = M[scene].tracks[i]; const b = document.createElement('button'); b.className = 'play'; b.textContent = '▶';
+  b.title = tr.name; b.onclick = () => playSeg(b, tr); return b;
+}
+(async () => {
+  M = await fetch(DIR + 'vs_manifest.json').then(r => r.json());
+  const box = document.getElementById('scenes');
+  for (const [k, name, what] of SCENES) {
+    const sc = M[k], notes = NOTES[k] || [];
+    const n = { ok: 0, mid: 0, bad: 0 }; notes.forEach(x => n[x[0]]++);
+    const card = document.createElement('section'); card.className = 'card';
+    card.innerHTML = `<h2>${name}</h2><div class="scene"><div><video controls preload="metadata" src="${DIR + sc.mix}"></video>
+      <p class="what">실제로 일어나는 일: ${what}</p>
+      <p class="score">맞음 ${n.ok} · 비슷 ${n.mid} · 엉뚱 ${n.bad}</p></div>
+      <div><table><tr><th>시점</th><th></th><th>바르코가 만든 소리</th><th>판정</th></tr></table></div></div>`;
+    const tb = card.querySelector('table');
+    sc.tracks.forEach((tr, i) => {
+      const [v, note] = notes[i] || ['mid', ''];
+      const row = tb.insertRow();
+      row.insertCell().outerHTML = `<td class="t">${tr.at.toFixed(2)}초</td>`;
+      row.insertCell().appendChild(btnFor(k, i));
+      const c = row.insertCell(); c.innerHTML = `${note}<span class="en">${tr.name}${tr.category && tr.category !== 'Sfx' ? ' · ' + tr.category : ''}</span>`;
+      row.insertCell().innerHTML = `<span class="chip ${v}">${LABEL[v]}</span>`;
+    });
+    box.appendChild(card);
+  }
+  const pt = document.getElementById('picks');
+  for (const [key, where, list] of PICKS) {
+    const row = pt.insertRow(); row.insertCell().textContent = key; row.insertCell().textContent = where;
+    const c = row.insertCell();
+    if (!list.length) c.textContent = '영상 결과에 쓸 만한 소리 없음 — 2차 효과음 후보에서 고르기';
+    list.forEach(([s, i]) => { const w = document.createElement('span'); w.style.marginRight = '10px'; w.append(btnFor(s, i), ' ' + (NOTES[s][i] || [])[1]); c.appendChild(w); });
+  }
+  document.addEventListener('play', e => { if (e.target.tagName === 'VIDEO') { audio.pause(); if (cur) cur.classList.remove('on'); cur = null; document.querySelectorAll('video').forEach(v => { if (v !== e.target) v.pause(); }); } }, true);
+})();
+</script>
+</body></html>
