@@ -146,6 +146,13 @@ namespace NyangPunch
                 S.run.cdHiss = Mathf.Clamp(S.run.cdHiss, 0, S.HissCd);
             }
             if (S.hasRun) S.run.toSpawn = Mathf.Max(0, S.run.toSpawn);
+            // balance 3 fields: saves from before have no cats / tiles. Cats met through boxes already built are added
+            // quietly (no first-meeting popup for a cat the player has had for a while), cheese is always there.
+            S.cats |= 1;
+            foreach (var c in CatDef.All) if (c.Tier > 0 && S.maxTier >= c.Tier) S.cats |= 1 << (int)c.Id;
+            if (S.pick < 0 || S.pick >= CatDef.All.Length || !S.HasCat(S.pick)) S.pick = 0;
+            if (S.run.tiles == null || S.run.tiles.Length != Puzzle.N * Puzzle.N) S.run.tiles = new int[Puzzle.N * Puzzle.N];
+            if (S.run.cat < 0 || S.run.cat >= CatDef.All.Length) S.run.cat = 0;
         }
 
         static bool Finite(double d) => !double.IsNaN(d) && !double.IsInfinity(d);
@@ -155,6 +162,7 @@ namespace NyangPunch
             if (r.obs == null || r.obs.Length != Puzzle.N * Puzzle.N || r.enemies == null || r.marks == null) return false;
             if (!Puzzle.InB(r.px, r.py) || r.obs[r.py * Puzzle.N + r.px] != 0 || r.floor < 1) return false;
             foreach (var o in r.obs) if (o < 0 || o > 2) return false;
+            if (r.tiles != null) foreach (var t in r.tiles) if (t < 0 || t > Tile.Grass) return false;
             foreach (var e in r.enemies) if (e == null || !Puzzle.InB(e.x, e.y) || e.type < 0 || e.type >= EDef.All.Length || e.hp <= 0 || e.max <= 0) return false;
             foreach (var m in r.marks) if (m == null || !Puzzle.InB(m.x, m.y) || m.type < 0 || m.type >= EDef.All.Length) return false;
             return true;

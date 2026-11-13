@@ -185,7 +185,7 @@ namespace NyangPunch
         void ShowClear(FloorReward rw)
         {
             BeginOverlay("clear", () => ShowClear(rw));
-            OvText(rw.WasBoss ? "보스층 클리어! 하트 1개 회복" : rw.NewBest ? "새 최고 기록!" : "층 클리어", 22, Art.Tomato, 30);
+            OvText(rw.WasBoss ? "보스층 클리어! 보너스 츄르 +50%" : rw.NewBest ? "새 최고 기록!" : "층 클리어", 22, Art.Tomato, 30);
             OvText($"{rw.Floor}층을 지켰어요!", 46, Art.Ink, 60);
             OvEarn("츄르", "+" + Defs.Fmt(rw.Churu), Art.Butter);
             OvEarn(rw.Lucky ? "행운의 선물! 은신처로 배달" : "은신처로 선물 배달", Defs.BoxName[rw.Gift], Color.white);

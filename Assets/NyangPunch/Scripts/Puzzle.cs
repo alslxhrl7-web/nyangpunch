@@ -59,6 +59,12 @@ namespace NyangPunch
         public bool YarnOpen => S.maxTier >= Defs.YarnNeed;
         public bool HissOpen => S.maxTier >= Defs.HissNeed;
         public int EnemiesLeft => R.enemies.Count + R.toSpawn + R.marks.Count;
+        public ThemeDef Theme => ThemeDef.ForFloor(R.floor);
+        public int TileAt(int x, int y) => R.tiles != null && R.tiles.Length == N * N ? R.tiles[Idx(x, y)] : 0;
+        /// <summary>Yard rule: the cat hiding in grass cannot be tracked by enemies that are not right next to it.</summary>
+        public bool Hidden => S.hasRun && TileAt(R.px, R.py) == Tile.Grass;
+        int HissRange => R.cat == (int)Breed.Mackerel ? 2 : 1;
+        bool wet;   // the cat splashed into a puddle this turn: skill cooldowns do not tick down
 
         // Used by the view to disable a skill button when it would do nothing (instead of an error sound).
         public bool YarnHasTarget
@@ -74,7 +80,7 @@ namespace NyangPunch
         }
         // Bosses (Fixed) cannot be pushed, so a hiss with only a boss next to the cat would do nothing.
         public bool HissHasTarget => S.hasRun && R.enemies != null && R.enemies.Exists(HissTarget);
-        bool HissTarget(EnemyData e) => Cheb(e.x, e.y, R.px, R.py) == 1 && !EDef.Of(e.type).Fixed;
+        bool HissTarget(EnemyData e) { int d = Cheb(e.x, e.y, R.px, R.py); return d >= 1 && d <= HissRange && !EDef.Of(e.type).Fixed; }
 
         int PickType(int f)
         {
@@ -110,7 +116,8 @@ namespace NyangPunch
 
         public void NewRun()
         {
-            S.run = new RunData { floor = 1, hearts = S.MaxHearts, nextId = 1 };
+            int cat = S.HasCat(S.pick) ? S.pick : 0;
+            S.run = new RunData { floor = 1, hearts = S.MaxHearts, nextId = 1, cat = cat };
             S.hasRun = true;
             GenFloor();
         }
@@ -118,8 +125,9 @@ namespace NyangPunch
         public void GenFloor()
         {
             int f = R.floor;
-            R.turn = 0; R.obs = new int[N * N]; R.enemies = new List<EnemyData>(); R.marks = new List<MarkData>();
+            R.turn = 0; R.obs = new int[N * N]; R.tiles = new int[N * N]; R.enemies = new List<EnemyData>(); R.marks = new List<MarkData>();
             R.px = 3; R.py = 3; R.cdYarn = 0; R.cdHiss = 0;   // nextId is not reset: ids stay unique for the whole run
+            R.shield = R.cat == (int)Breed.Calico; wet = false;
             // Furniture must never wall off a cell: every free cell has to be reachable from the cat,
             // otherwise an enemy (or the boss) can end up somewhere it can never be hit and the floor never ends.
             int nObs = 3 + (f % 3);
@@ -135,18 +143,27 @@ namespace NyangPunch
                 }
                 if (AllFreeConnected()) break;
             }
+            // theme floor tiles (never under furniture or the cat's start cell)
+            var th = ThemeDef.ForFloor(f);
+            if (th.TileKind != Tile.None)
+                for (int k = 0, placed = 0; placed < th.TileCount && k < 300; k++)
+                {
+                    int x = Ri(N), y = Ri(N);
+                    if ((x == 3 && y == 3) || R.obs[Idx(x, y)] != 0 || R.tiles[Idx(x, y)] != 0) continue;
+                    R.tiles[Idx(x, y)] = th.TileKind; placed++;
+                }
             if (f % 5 == 0)
             {
                 int type = f % 10 == 5 ? (int)EType.Vacuum : (int)EType.Tub;
                 if (!FreeCell(3, false, out int bx, out int by)) { bx = 0; by = 0; }
                 AddEnemy(type, bx, by, (f - 5) / 10 * 3);
-                R.toSpawn = 1 + f / 5;
+                R.toSpawn = Defs.BossAdds(f);
                 R.boss = true;
             }
             else
             {
-                int total = Math.Min(12, 3 + (int)(f * 0.7));
-                int initial = Math.Min(total, 2 + f / 4);
+                int total = Defs.FloorEnemies(f);
+                int initial = Defs.FloorInitial(f, total);
                 for (int i = 0; i < initial; i++) if (FreeCell(3, false, out int x, out int y)) AddEnemy(PickType(f), x, y);
                 R.toSpawn = total - initial;
                 R.boss = false;
@@ -163,9 +180,9 @@ namespace NyangPunch
                 R.enemies.Remove(e); R.kills++;
                 bool boss = EDef.Of(e.type).Boss;
                 fx.CellPuff(e.x + 0.5f, e.y + 0.5f, boss ? 22 : 7, boss ? 1.6f : 1f);
-                int gain = 1 + S.Up(Defs.UpId.Hunter);
+                double gain = (1 + S.Up(Defs.UpId.Hunter)) * S.ChuruMul;
                 S.churu += gain; fx.ChuruGained(gain);
-                fx.CellText(e.x + 0.5f, e.y + 0.4f, "+" + gain, Art.Pink, 24);
+                fx.CellText(e.x + 0.5f, e.y + 0.4f, "+" + (gain == Math.Floor(gain) ? gain.ToString("0") : gain.ToString("0.0")), Art.Pink, 24);
                 if (boss) { fx.Banner(EDef.Of(e.type).Name + " 처치!", ""); fx.Sound("kill_boss"); fx.Shake(10); }
                 else fx.Sound(KillSound(e.type));
             }
@@ -194,7 +211,7 @@ namespace NyangPunch
             }
         }
 
-        void Push(EnemyData e, int dx, int dy)
+        void Push(EnemyData e, int dx, int dy, int depth = 0)
         {
             if (!R.enemies.Contains(e) || EDef.Of(e.type).Fixed) return;
             int nx = e.x + dx, ny = e.y + dy;
@@ -203,6 +220,44 @@ namespace NyangPunch
             if (o != null) { Damage(e, 1, "쿵"); Damage(o, 1, "쿵"); fx.Sound("bump"); fx.Shake(4); return; }
             if (nx == R.px && ny == R.py) return;
             e.x = nx; e.y = ny;
+            int t = TileAt(nx, ny);
+            // kitchen: a slick tile sends the pushed enemy one more cell (and into the wall if that is where it leads)
+            if (t == Tile.Slick && depth < N) { fx.CellText(nx + 0.5f, ny + 0.2f, "주르륵", Art.Butter, 22); Push(e, dx, dy, depth + 1); return; }
+            if (t == Tile.Puddle) Soak(e);
+        }
+
+        /// <summary>Bathroom: an enemy that steps or is pushed into a puddle loses its next turn.</summary>
+        void Soak(EnemyData e)
+        {
+            if (EDef.Of(e.type).Boss || e.stun > 0) return;
+            e.stun = 1; e.threat = false;
+            fx.CellText(e.x + 0.5f, e.y + 0.2f, "첨벙", new UnityEngine.Color(0.55f, 0.8f, 1f), 22);
+        }
+
+        /// <summary>After the cat steps onto a cell: kitchen tiles slide it one more cell, bathroom puddles splash.</summary>
+        void CatLanded(int dx, int dy)
+        {
+            int t = TileAt(R.px, R.py);
+            if (t == Tile.Slick)
+            {
+                int nx = R.px + dx, ny = R.py + dy;
+                if (InB(nx, ny) && !Obs(nx, ny) && At(nx, ny) == null)
+                {
+                    R.px = nx; R.py = ny;
+                    fx.CellText(nx + 0.5f, ny + 0.1f, "주르륵", Art.Butter, 22);
+                    if (TileAt(nx, ny) == Tile.Puddle) Splash();
+                }
+            }
+            else if (t == Tile.Puddle) Splash();
+        }
+
+        void Splash()
+        {
+            R.tiles[Idx(R.px, R.py)] = Tile.None;
+            wet = true;
+            fx.CellPuff(R.px + 0.5f, R.py + 0.6f, 8, 0.8f);
+            fx.CellText(R.px + 0.5f, R.py + 0.1f, "첨벙! 부르르", new UnityEngine.Color(0.55f, 0.8f, 1f), 24);
+            fx.Sound("pop");
         }
 
         public enum Kind { Dir, Yarn, Hiss, Wait }
@@ -223,7 +278,7 @@ namespace NyangPunch
                     fx.Swipe(tx, ty, dx, dy); fx.Sound("punch");
                     Damage(e, 1 + S.Up(Defs.UpId.Claw)); Push(e, dx, dy);
                 }
-                else { R.px = tx; R.py = ty; fx.Sound("step"); }
+                else { R.px = tx; R.py = ty; fx.Sound("step"); CatLanded(dx, dy); }
             }
             else if (kind == Kind.Yarn)
             {
@@ -233,7 +288,10 @@ namespace NyangPunch
                 if (hit == null) { fx.Banner("그 줄에는 적이 없어요", ""); return false; }
                 if (dx != 0) R.face = dx;
                 fx.Yarn(R.px, R.py, hit.x, hit.y); fx.Sound("throw");
-                Damage(hit, 1); Push(hit, dx, dy);
+                var behind = R.cat == (int)Breed.Cheese ? At(hit.x + dx, hit.y + dy) : null;   // cheese: the yarn goes one cell further
+                Damage(hit, 1);
+                if (behind != null && R.enemies.Contains(behind)) Damage(behind, 1, "관통");
+                Push(hit, dx, dy);
                 R.cdYarn = S.YarnCd;
             }
             else if (kind == Kind.Hiss)
@@ -378,6 +436,7 @@ namespace NyangPunch
         public int EnemyPhase()
         {
             var d4 = UnstickEnemies(Bfs(false)); var d8 = Bfs(true);
+            bool hidden = Hidden;
             var order = new List<EnemyData>(R.enemies);
             order.Sort((a, b) => Manh(a.x, a.y, R.px, R.py).CompareTo(Manh(b.x, b.y, R.px, R.py)));
             int hurt = 0;
@@ -387,10 +446,23 @@ namespace NyangPunch
                 var d = EDef.Of(e.type);
                 if (d.Slow) { if (e.rest) { e.rest = false; continue; } e.rest = true; }
                 if (e.type == (int)EType.Vacuum) { hurt += VacuumTurn(e, d4); continue; }
+                if (e.stun > 0) { e.stun--; continue; }   // soaked by a puddle
                 if (e.threat && Adj(e, R.px, R.py)) { hurt += d.Dmg; fx.Lunge(e.id); continue; }
                 var dist = d.Diag ? d8 : d4;
                 var dirs = d.Diag ? Dirs8 : Dirs4;
                 if (Adj(e, R.px, R.py)) continue;
+                if (hidden && !d.Boss)
+                {
+                    // yard: the cat is hiding in the grass, so the enemy wanders instead of chasing (sometimes stays put)
+                    if (Ri(3) == 0) continue;
+                    var dd0 = dirs[Ri(dirs.Length)];
+                    int wx = e.x + dd0[0], wy = e.y + dd0[1];
+                    if (!InB(wx, wy) || Obs(wx, wy) || At(wx, wy) != null || (wx == R.px && wy == R.py)) continue;
+                    if (wx != e.x) e.face = Math.Sign(wx - e.x);
+                    e.x = wx; e.y = wy;
+                    if (TileAt(wx, wy) == Tile.Puddle) Soak(e);
+                    continue;
+                }
                 int cur = dist[Idx(e.x, e.y)];
                 int bx = -1, by = -1; double best = double.MaxValue;
                 foreach (var dd in dirs)
@@ -407,6 +479,7 @@ namespace NyangPunch
                 if (bx < 0) continue;
                 if (bx != e.x) e.face = Math.Sign(bx - e.x);
                 e.x = bx; e.y = by;
+                if (TileAt(bx, by) == Tile.Puddle) Soak(e);
             }
             // bathtub boss releases flies
             foreach (var e in new List<EnemyData>(R.enemies))
@@ -444,8 +517,16 @@ namespace NyangPunch
                     R.toSpawn--;
                 }
             }
-            foreach (var e in R.enemies) e.threat = e.type != (int)EType.Vacuum && !e.rest && Adj(e, R.px, R.py);
-            R.cdYarn = Math.Max(0, R.cdYarn - 1); R.cdHiss = Math.Max(0, R.cdHiss - 1);
+            foreach (var e in R.enemies) e.threat = e.type != (int)EType.Vacuum && !e.rest && e.stun <= 0 && Adj(e, R.px, R.py);
+            if (wet) { R.cdYarn = Math.Max(1, R.cdYarn); R.cdHiss = Math.Max(1, R.cdHiss); wet = false; }   // shaking off the water: cooldowns wait a turn
+            else { R.cdYarn = Math.Max(0, R.cdYarn - 1); R.cdHiss = Math.Max(0, R.cdHiss - 1); }
+            if (hurt > 0 && R.shield)
+            {
+                // calico: the first hit of the floor is shrugged off
+                R.shield = false; hurt = 0;
+                fx.CellText(R.px + 0.5f, R.py - 0.1f, "행운의 털!", Art.Butter, 30);
+                fx.Sound("bump"); fx.Ring(R.px, R.py); fx.Shake(4);
+            }
             if (hurt > 0)
             {
                 R.hearts = Math.Max(0, R.hearts - hurt);
@@ -467,13 +548,14 @@ namespace NyangPunch
         public FloorReward ClaimFloor()
         {
             var rw = new FloorReward { Floor = R.floor, WasBoss = R.boss };
-            rw.Churu = Math.Round(Defs.FloorChuru(R.floor, R.boss) * (1 + S.Up(Defs.UpId.Loot) * 0.3));
+            rw.Churu = Math.Round(Defs.FloorChuru(R.floor, R.boss) * (1 + S.Up(Defs.UpId.Loot) * 0.3) * S.ChuruMul);
             rw.Gift = Math.Min(6, 1 + R.floor / 4 + (R.boss ? 1 : 0));
             if (Rf() < S.Up(Defs.UpId.Lucky) * 0.15) { rw.Gift = Math.Min(7, rw.Gift + 1); rw.Lucky = true; }
             S.churu += rw.Churu; S.total += rw.Churu; S.gifts.Add(rw.Gift);
             rw.NewBest = R.floor > S.bestFloor; S.bestFloor = Math.Max(S.bestFloor, R.floor);
-            if (rw.WasBoss) R.hearts = Math.Min(S.MaxHearts, R.hearts + 1);
+            // every floor starts with full hearts (the old boss "+1 heart" became the boss churu bonus)
             R.floor++; GenFloor();
+            R.hearts = S.MaxHearts;
             return rw;
         }
 
